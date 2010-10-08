@@ -19,21 +19,21 @@ function! s:action_script()
   if has('gui_macvim')
     let app = 'MacVim.app'
   endif
-  let commands = ['-e "tell application \"' . s:app . '\""', 
+  let commands = ['-e "tell application \"' . app . '\""', 
                 \ '-e "activate"', 
                 \ "-e \"set AppleScript's text item delimiters to {\\\",\\\"}\"",
-                \ '-e "set col to (choose color' . s:parse_hex_color() . ') as text',
+                \ '-e "set col to (choose color ' . s:parse_hex_color() . ') as text"',
                 \ '-e "end tell"']
-  return "osascript" . join(commands, ' ')
+  return "osascript " . join(commands, ' ')
 endfunction
 
 function! s:parse_hex_color()
 	let c = expand("<cword>")
-	if c !=~ '\v\c[A-F1-9]{3,6}'
+	if c !~ '\v\c[A-F1-9]{3,6}'
     let c = 'FFFFFF'
   endif
 
-  if len(c) == 3
+  if strlen(c) == 3
     let sr = strpart(c,0,1) . strpart(c,0,1)
     let sg = strpart(c,1,1) . strpart(c,1,1)
     let sb = strpart(c,2,1) . strpart(c,2,1)
